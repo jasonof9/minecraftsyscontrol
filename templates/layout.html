@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>My Flask App</title>
+		<meta name="viewwport" content="width=device-width, intial-scale=1, shrink-to-fit=no">
+		<title>Minecraft System Control</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
 			integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		
 	</head>
-	<body>
-		{% include 'includes/_navbar.html' %}
+	<body style="padding-top: 70px;">
 		<div class="container">
+		{% include 'includes/_navbar.html' %}
 		{% block body %} {% endblock %}
 		</div>
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
