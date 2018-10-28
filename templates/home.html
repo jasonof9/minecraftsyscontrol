@@ -2,6 +2,10 @@
 
 {% block body %}
 <div class = "container-fluid">
-<h1> HOMNE </h1>
+<h1> Latest Log </h1>
+{% for line in value %}
+{{ line }} <br>
+{% endfor %}
 </div>
+
 {% endblock %}
