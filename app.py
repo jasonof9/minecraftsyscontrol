@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, send_from_directory
 import boto3, json
 
 application = Flask(__name__)
@@ -11,6 +11,10 @@ def index():
 	for line in file:
    		loglines.append(line)
 	return render_template('home.html', value=loglines)
+
+@application.route('/ov/<path:path>')
+def send_ov(path):
+    return send_from_directory('ov', path)
 
 @application.route('/about')
 def about():
