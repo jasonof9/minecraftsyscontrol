@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_from_directory
-import boto3, json
+import boto3, json, os, time
 
 application = Flask(__name__)
 
@@ -10,6 +10,8 @@ def index():
 	file = open(filename, "r")
 	for line in file:
    		loglines.append(line)
+	loglines.append('Date: ')
+	loglines.append( time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
 	return render_template('home.html', value=loglines)
 
 @application.route('/ov/<path:path>')
