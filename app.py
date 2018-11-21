@@ -5,6 +5,11 @@ application = Flask(__name__)
 
 @application.route('/')
 def index():
+	return render_template('home.html')
+
+
+@application.route('/logs')
+def logview():
 	loglines = []
 	filename = "/home/admin/mc_logs/latest.log"
 	file = open(filename, "r")
@@ -12,7 +17,7 @@ def index():
    		loglines.append(line)
 	loglines.append('Date: ')
 	loglines.append( time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
-	return render_template('home.html', value=loglines)
+	return render_template('logs.html', value=loglines)
 
 @application.route('/ov/<path:path>')
 def send_ov(path):

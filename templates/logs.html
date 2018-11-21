@@ -2,9 +2,10 @@
 
 {% block body %}
 <div class = "container-fluid">
-<h1> Welcome to Minecraft System Status </h1>
-
-<p> Click on a menu option above ^ </p>
+<h1> Latest Log </h1>
+{% for line in value %}
+{{ line }} <br>
+{% endfor %}
 </div>
 
 {% endblock %}
