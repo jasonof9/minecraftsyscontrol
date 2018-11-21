@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_from_directory
-import boto3, json, os, time
+import boto3, json, os, time, settings
 
 application = Flask(__name__)
 
@@ -30,8 +30,8 @@ def about():
 @application.route('/serverstatus')
 def serverstatus():
 	client = boto3.client('ec2', region_name='us-east-1')
-	response = client.describe_instance_status(InstanceIds=['i-0407af6e7e8d3ba3e'])
-	return str(response)
+#	response = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['instance_id']])
+	return str(settings.AWS_CONFIG['mcinstance'])
 
 @application.route('/overview')
 def overviewer():
