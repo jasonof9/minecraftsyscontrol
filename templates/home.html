@@ -5,6 +5,12 @@
 <h1> Welcome to Minecraft System Status </h1>
 
 <p> Click on a menu option above ^ </p>
+
+{% if value == 'running' %}
+Server is running!&nbsp; <img src="images/green-button.png"/> <br>
+{% else %}
+Server is not running&nbsp; <img src="images/red-button.png"/> <br>
+{% endif %}
 </div>
 
 {% endblock %}

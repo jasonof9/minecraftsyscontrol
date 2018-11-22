@@ -5,7 +5,12 @@ application = Flask(__name__)
 
 @application.route('/')
 def index():
-	return render_template('home.html')
+        client = boto3.client('ec2', region_name='us-east-1')
+        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+
+	i = r['InstanceStatuses'][0]['InstanceState']['Name']
+#	return(i)
+	return render_template('home.html',value=i)
 
 
 @application.route('/logs')
