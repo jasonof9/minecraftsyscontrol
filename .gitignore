@@ -1,3 +1,4 @@
+.gitignore
 app.py.save
 app.pyc
 invalidjson.json
@@ -20,3 +21,8 @@ templates/regions.js
 templates/signpost-shadow.png
 templates/signpost.png
 templates/signpost_icon.png
+ov/*
+test.py
+validjson.json
+settings.py
+settings.pyc
