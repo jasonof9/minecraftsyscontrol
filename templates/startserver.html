@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class = "container-fluid">
+<h1> Welcome to Minecraft System Status </h1>
+
+<p> Click on a menu option above ^ </p>
+
+{% if value == 'alreadyrunning' %}
+
+<h3>Server is already running!</h3>
+<br>
+
+<a href = "http://syscontrol.nine-walkers.com">Click here to return</a>
+
+{% else %}
+
+<p>Success! Technical Info:</p>
+
+<a href = "http://syscontrol.nine-walkers.com">Click here to return</a>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
