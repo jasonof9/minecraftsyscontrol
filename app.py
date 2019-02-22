@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, send_from_directory, Response
-import boto3, json, os, time, settings
+from flask import Flask, render_template, request, send_from_directory, Response, Markup
+import boto3, json, os, time, settings, datetime
+from datetime import timedelta
+
 
 application = Flask(__name__)
 
@@ -20,10 +22,20 @@ def logview():
 	loglines = []
 	filename = "/home/admin/mc_logs/latest.log"
 	file = open(filename, "r")
+	loglines.append(Markup('<strong>Date: '))
+	loglines.append(time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime(filename))))
+	loglines.append(Markup('</strong>'))
 	for line in file:
-   		loglines.append(line)
-	loglines.append('Date: ')
-	loglines.append( time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
+		linetime = (line[1:9])
+	        if linetime:
+        		lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
+               		linelocaltime = lineactualtime + timedelta(hours=-6)
+               		print (linelocaltime)
+                	lineformatted = '[' +  str(linelocaltime.hour) + ':' + str(linelocaltime.minute) + ':' + str(linelocaltime.second) + '] ' +  line[10:]
+	        loglines.append(lineformatted)
+
+	loglines.append(Markup('<br/> <br/>'))
+#	loglines.append( time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
 	return render_template('logs.html', value=loglines)
 
 @application.route('/ov/<path:path>')
@@ -34,6 +46,7 @@ def send_ov(path):
 def about():
 	return render_template('about.html')
 
+#todo ; add try/except
 @application.route('/serverstatus')
 def serverstatus():
 	client = boto3.client('ec2', region_name='us-east-1')
@@ -42,7 +55,7 @@ def serverstatus():
 	strResponse = json.dumps(response)
 	return Response(strResponse, mimetype='text/json')
 
-
+#todo - add try/except
 @application.route('/startserver',methods=['GET','POST'])
 def startserver():
 	returnedData = ""
