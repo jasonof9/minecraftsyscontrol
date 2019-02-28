@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_from_directory, Response, Markup
 import boto3, json, os, time, settings, datetime
 from datetime import timedelta
+import mcstatus.querymc as QM
 
 
 application = Flask(__name__)
@@ -9,12 +10,15 @@ application = Flask(__name__)
 def index():
         client = boto3.client('ec2', region_name='us-east-1')
         r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+	serverstatus = {}
+
 	if len(r['InstanceStatuses']) == 0:
 		i = ''
 	else:
 		i = r['InstanceStatuses'][0]['InstanceState']['Name']
+		serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
 #	return(i)
-	return render_template('home.html',value=i)
+	return render_template('home.html',value=i,serverstatusdict=serverstatus)
 
 
 @application.route('/logs')
@@ -85,6 +89,10 @@ def startserver():
 @application.route('/overview')
 def overviewer():
 	return render_template('overview.html')
+
+@application.route('/mcstatus')
+def mcstatus():
+	return QM.queryninewalkers()
 
 @application.errorhandler(404)
 def handle404(e):
