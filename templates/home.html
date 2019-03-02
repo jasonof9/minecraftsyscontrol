@@ -4,10 +4,10 @@
 <div class = "container-fluid">
 <h1> Welcome to Minecraft System Status </h1>
 
-<p> Click on a menu option above ^ </p>
+<p class="h6"> Click on a menu option above ^ </p>
 
 {% if value == 'running' %}
-Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br>
+<p class="h6">Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br></p>
 
 <table class="table table-bordered">
 	<thead>
@@ -36,11 +36,12 @@ Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br>
 </table>
 
 {% else %}
-Server is not running&nbsp; <img src="/static/red-button-small.png"/> <br>
+<p class="h6">Server is not running&nbsp; <img src="/static/red-button-small.png"/></p> <br>
 Click here to start it (experimental!) <a href='/startserver'>Start Server </a>
 {% endif %}
 <br>
-Automatic server hours are from 4pm to midnight central. Usually. (Earlier if someone manually starts it!)
+<p class="h5">Automatic server hours are from 4pm to midnight central. Usually. (Earlier if someone manually starts it!)</p>
+<p class="h5">Website new and improved with an all-new Minecraft dirt block background!</p>
 </div>
 
 {% endblock %}
