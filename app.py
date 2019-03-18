@@ -33,9 +33,15 @@ def logview():
 		linetime = (line[1:9])
 	        if linetime:
         		lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
-               		linelocaltime = lineactualtime + timedelta(hours=-6)
+               		linelocaltime = lineactualtime + timedelta(hours=-5)
+			localminute = str(linelocaltime.minute)
+			localsecond = str(linelocaltime.second)
+			if len(localminute) == 1:
+				localminute = '0' + localminute
+			if len(localsecond) == 1:
+				localsecond = '0' + localsecond
                		print (linelocaltime)
-                	lineformatted = '[' +  str(linelocaltime.hour) + ':' + str(linelocaltime.minute) + ':' + str(linelocaltime.second) + '] ' +  line[10:]
+                	lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
 	        loglines.append(lineformatted)
 
 	loglines.append(Markup('<br/> <br/>'))
