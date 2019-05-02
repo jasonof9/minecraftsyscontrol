@@ -16,9 +16,29 @@ def index():
 		i = ''
 	else:
 		i = r['InstanceStatuses'][0]['InstanceState']['Name']
-		serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+		try:
+			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+		except:
+			serverstatus = []
 #	return(i)
 	return render_template('home.html',value=i,serverstatusdict=serverstatus)
+
+
+
+@application.route('/hometest')
+def index2():
+        client = boto3.client('ec2', region_name='us-east-1')
+        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+        serverstatus = {}
+
+        if len(r['InstanceStatuses']) == 0:
+                i = ''
+        else:
+                i = r['InstanceStatuses'][0]['InstanceState']['Name']
+                serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+#       return(i)
+        return render_template('home3.html',value=i,serverstatusdict=serverstatus)
+
 
 
 @application.route('/logs')
@@ -48,6 +68,7 @@ def logview():
 #	loglines.append( time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
 	return render_template('logs.html', value=loglines)
 
+#deprecated - remove
 @application.route('/ov/<path:path>')
 def send_ov(path):
     return send_from_directory('ov', path)
@@ -92,13 +113,20 @@ def startserver():
 	return render_template('startserver.html', value=returnedData)
 
 
-@application.route('/overview')
-def overviewer():
-	return render_template('overview.html')
-
 @application.route('/mcstatus')
 def mcstatus():
 	return QM.queryninewalkers()
+
+@application.route('/playersonline')
+def playersonline():
+
+	playerlist = ''
+	playerarray = QM.queryplayersonly('minecraft.nine-walkers.com')
+	for s in playerarray:
+		playerlist += s 
+		playerlist += ';'
+	return playerlist
+
 
 @application.errorhandler(404)
 def handle404(e):
