@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class = "container-fluid">
+<div class = "container-fluid" style="background-image: url(/static/translucent_tile.png)">
 <h1> Latest Log </h1>
 {% for line in value %}
-{{ line }} <br>
+<span style="color:#DDDDDD;">{{ line }}</span> <br>
 {% endfor %}
 </div>
 

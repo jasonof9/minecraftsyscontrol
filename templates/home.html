@@ -1,13 +1,13 @@
-{% extends 'layout.html' %}
+{% extends 'layout3.html' %}
 
 {% block body %}
-<div class = "container-fluid">
+<div class = "container-fluid" style="background-image: url(/static/translucent_tile.png)">
 <h1> Welcome to Minecraft System Status </h1>
 
-<p class="h6"> Click on a menu option above ^ </p>
+<p> Click on a menu option above ^ </p>
 
 {% if value == 'running' %}
-<p class="h6">Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br></p>
+<p>Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br></p>
 
 <table class="table table-bordered">
 	<thead>
@@ -36,16 +36,16 @@
 </table>
 
 {% else %}
-<p class="h6">Server is not running&nbsp; <img src="/static/red-button-small.png"/></p> <br>
-<p class="h6">Click here to start it!</p> <a href='/startserver'>Start Server </a>
+<p>Server is not running&nbsp; <img src="/static/red-button-small.png"/></p> <br>
+<p>Click here to start it!</p> <a href='/startserver'>Start Server </a>
 
 {% endif %}
 <br>
 <br>
 <ul>
 <li><p class="h3" style="color:red">Server updated to 1.14!!  Enjoy and let me know if there are any problems.</p></li>
-<li><p class="h5">Overview Map is now updated!</p></li>
-<li><p class="h5">Automatic server hours are from 5pm to midnight central. Usually. (Earlier if someone manually starts it!)</p></li>
+<li><p>Overview Map is now updated!</p></li>
+<li><p>Automatic server hours are from 5pm to midnight central. Usually. (Earlier if someone manually starts it!)</p></li>
 </ul>
 </div>
 
