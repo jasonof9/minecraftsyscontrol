@@ -52,16 +52,19 @@ def logview():
 	for line in file:
 		linetime = (line[1:9])
 	        if linetime:
-        		lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
-               		linelocaltime = lineactualtime + timedelta(hours=-5)
-			localminute = str(linelocaltime.minute)
-			localsecond = str(linelocaltime.second)
-			if len(localminute) == 1:
-				localminute = '0' + localminute
-			if len(localsecond) == 1:
-				localsecond = '0' + localsecond
-               		print (linelocaltime)
-                	lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
+			try:
+	        		lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
+        	       		linelocaltime = lineactualtime + timedelta(hours=-5)
+				localminute = str(linelocaltime.minute)
+				localsecond = str(linelocaltime.second)
+				if len(localminute) == 1:
+					localminute = '0' + localminute
+				if len(localsecond) == 1:
+					localsecond = '0' + localsecond
+               			print (linelocaltime)
+                		lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
+			except:
+				lineformatted = line
 	        loglines.append(lineformatted)
 
 	loglines.append(Markup('<br/> <br/>'))
