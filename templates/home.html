@@ -1,13 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class = "container-fluid" style="background-image: url(/static/translucent_tile.png)">
-<h1> Welcome to Minecraft System Status </h1>
-
+<div class = "container-fluid" style="background-image: url(http://static.nine-walkers.com/translucent_tile.png)">
+<h1> Welcome to Minecraft System Status - {{serverpage}} </h1>
 <p> Click on a menu option above ^ </p>
 
+{% if mx %}
+<p>Maintenace mode - please wait a few and check back! &nbsp; </p>
+{% endif %}
+
 {% if value == 'running' %}
-<p>Server is running!&nbsp; <img src="/static/green-button-small.png"/> <br></p>
+<p>Server is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
 
 <table class="table table-bordered">
 	<thead>
@@ -36,13 +39,33 @@
 </table>
 
 {% else %}
-<p>Server is not running&nbsp; <img src="/static/red-button-small.png"/></p> <br>
-<p>Click here to start it!</p> <a href='/startserver'>Start Server </a>
+<p>Server is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png"/></p> <br>
+
+{% if mx %}
+<p>Maintenace mode - please wait a few and check back! &nbsp; </p>
+
+{% else %} 
+
+{% if serverpage == 'Waterworld' %}
+<p>Click <a href='/startserver?servername==water'>here</a> to start it!</p>
+{% else %}
+<p>Click <a href='/startserver'>here</a> to start it!</p> 
+{% endif %}
+
+{% endif %}
 
 {% endif %}
 <br>
 <br>
+{% if serverpage == 'Waterworld' %}
+{% include 'waternews.html' %}
+
+{% else %}
+
 {% include 'news.html' %}
+
+{% endif %}
+<br><br>
 </div>
 
 {% endblock %}
