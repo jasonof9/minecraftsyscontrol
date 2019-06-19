@@ -3,17 +3,27 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
+{% if serverpage != 'Waterworld' %}
       <div class="collapse navbar-collapse" id="navbarsExampleDefault" style="background-image:url('http://static.nine-walkers.com/sunrise-top.png')">
+{% elif serverpage == 'Waterworld' %}
+ <div class="collapse navbar-collapse" id="navbarsExampleDefault" style="background-image:url('http://static.nine-walkers.com/plain_vasty_top.png')">
+{% endif %}
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item active" id="hometab">
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logs">Logs</a>
+ 	<li class="nav-item" id="towntab">
+            <a class="nav-link" href="/town">Town</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://mcoverview.nine-walkers.com">Minecraft Map</a>
+	 <li class="nav-item" id="wwtab">
+            <a class="nav-link" href="/waterworld">Kamino</a>
+          </li>
+
+          <li class="nav-item" id="logstab">
+            <a class="nav-link" href="/logs">Logs (town)</a>
+          </li>
+          <li class="nav-item" id="overviewertab">
+            <a class="nav-link" href="http://mcoverview.nine-walkers.com">Minecraft Map (town)</a>
           </li>
         </ul>
       </div>

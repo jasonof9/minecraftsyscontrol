@@ -4,7 +4,7 @@
 <div class = "container-fluid">
 <h1> Welcome to Minecraft System Status </h1>
 
-<p> Click on a menu option above ^ </p>
+<p> Click on a menu option above ^ ... server is {{ server }}</p>
 
 {% if value == 'alreadyrunning' %}
 
@@ -15,7 +15,7 @@
 
 {% else %}
 
-<p>Success! Technical Info:</p>
+<p>Success!  {{ value }} </p>
 
 <a href = "http://syscontrol.nine-walkers.com">Click here to return</a>
 

@@ -1,6 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<script language="Javascript">
+$(function(){
+        document.getElementById('hometab').className = "nav-item active";
+        document.getElementById('logstab').className = "nav-item";
+        document.getElementById('overviewertab').className = "nav-item";
+}
+)
+</script>
+
+
 <div class = "container-fluid" style="background-image: url(http://static.nine-walkers.com/translucent_tile.png)">
 <h1> Welcome to Minecraft System Status - {{serverpage}} </h1>
 <p> Click on a menu option above ^ </p>
@@ -11,6 +21,10 @@
 
 {% if value == 'running' %}
 <p>Server is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
+
+{% if serverstatusdict['playersonline'] == 0 and serverpage != 'Waterworld'  %}
+<p>If no one is online, you can shut it down <a href="/stopserver"> by clicking here </a> </p>
+{% endif %}
 
 <table class="table table-bordered">
 	<thead>
@@ -47,7 +61,7 @@
 {% else %} 
 
 {% if serverpage == 'Waterworld' %}
-<p>Click <a href='/startserver?servername==water'>here</a> to start it!</p>
+<p>Click <a href='/startserver?servername=water'>here</a> to start it!</p>
 {% else %}
 <p>Click <a href='/startserver'>here</a> to start it!</p> 
 {% endif %}
