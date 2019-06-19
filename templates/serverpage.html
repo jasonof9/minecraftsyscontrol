@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<script language="Javascript">
+$(function(){
+        document.getElementById('hometab').className = "nav-item";
+        document.getElementById('logstab').className = "nav-item";
+        document.getElementById('overviewertab').className = "nav-item";
+{% if serverdata['servername'] == 'waterworld' %}
+        document.getElementById('wwtab').className = "nav-item active";
+	document.getElementById('towntab').className = "nav-item";
+{% else %}
+	document.getElementById('towntab').className = "nav-item active";
+        document.getElementById('wwtab').className = "nav-item";
+{% endif %}
+
+        document.getElementById('logstab').className = "nav-item";
+        document.getElementById('overviewertab').className = "nav-item";
+
+}
+)
+</script>
+
+
+<div class = "container-fluid" style="background-image: url(http://static.nine-walkers.com/translucent_tile.png)">
+<h1> Welcome to Minecraft System Status - {{serverpage}} </h1>
+<p> Click on a menu option above ^ </p>
+<!-- debug info: {{serverdata['instancestatus']}}  {{serverdata['servername']}} {{serverdata['bgimage']}} {{serverdata['newspage']}}  -->
+
+{% if mx %}
+<p>Maintenace mode - please wait a few and check back! &nbsp; </p>
+{% endif %}
+
+{% if serverdata['instancestatus'] == 'running' %}
+<p>Server is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
+
+{% if serverstatusdict['playersonline'] == 0 and serverpage != 'Waterworld'  %}
+<p>If no one is online, you can shut it down <a href="/stopserver"> by clicking here </a> </p>
+{% endif %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th scope="col">Number Online</th>
+			<th scope="col">Max Players</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class='w-50'>
+			<td>{{serverstatusdict['playersonline']}}</td>
+			<td>{{serverstatusdict['maxplayers']}}</td>
+		</tr>
+	</tbody>
+</table>
+<table class="table table-bordered">
+{% if serverstatusdict['players'] %}
+	<thead>
+		<tr><th>Who's Online</th></tr>
+	<tbody>
+{% endif %}
+{% for playername in serverstatusdict['players'] %}
+		<tr><td>{{playername}}</td></tr>
+{% endfor %}
+	</tbody>
+</table>
+
+{% else %}
+<p>Server is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png"/></p> <br>
+
+{% if mx %}
+<p>Maintenace mode - please wait a few and check back! &nbsp; </p>
+
+{% else %} 
+
+{% if serverpage == 'Waterworld' %}
+<p>Click <a href='/startserver?servername=water'>here</a> to start it!</p>
+{% else %}
+<p>Click <a href='/startserver'>here</a> to start it!</p> 
+{% endif %}
+
+{% endif %}
+
+{% endif %}
+<br>
+<br>
+{% include serverdata['newspage'] %}
+<br><br>
+</div>
+
+{% endblock %}
