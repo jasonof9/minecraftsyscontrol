@@ -63,6 +63,7 @@ def ww():
                         serverstatus = QM.querymcserver('waterworld.nine-walkers.com')
                 except:
                         serverstatus = []
+	serverinfo['serverstatus'] = serverstatus
 	serverinfo['instancestatus'] = instance_status
 
         return render_template('serverpage.html',value=instance_status,serverstatusdict=serverstatus,serverpage='Waterworld', serverdata=serverinfo)
