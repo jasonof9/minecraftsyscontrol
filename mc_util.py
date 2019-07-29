@@ -9,7 +9,7 @@ def logLineStyle(rawLogLine):
 	if event == 'death':
 		returnedStyle = baseEventStyle + ';color:red'
 	elif event == 'serverstart':
-		returnedStyle = baseEventStyle + ';color:green'
+		returnedStyle = baseEventStyle + ';color:lime'
 	elif event == 'joinedleft':
 		returnedStyle = baseEventStyle + ';color:white'
 	elif event == 'servertrouble':
