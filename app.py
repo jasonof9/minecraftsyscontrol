@@ -110,7 +110,7 @@ def logview():
 				#print (linelocaltime)
 				style = mc_util.logLineStyle(line)
 				lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
-				lineformatted = Markup('<span class = \"' + style + '\">' + lineformatted + '</span>')
+				lineformatted = Markup('<span style = \"' + style + '\">' + lineformatted + '</span>')
 			except:
 				lineformatted = line
 			loglines.append(lineformatted)

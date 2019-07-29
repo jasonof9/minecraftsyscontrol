@@ -1,14 +1,23 @@
 import boto3
+import datetime
 
 #this should return a string that matches a classname in 9w.css
 def logLineStyle(rawLogLine):
-	if rawLogLine.find('joined the game') >= 0 or rawLogLine.find('left the game') >= 0:
-		return 'logjoinleave'
-	elif rawLogLine.find('fell from a high') >= 0:
-		return 'logdeath'
-	else:
-		return 'logline'
-
+	baseEventStyle = 'font-weight:bold'
+	event = interestingLogLine(rawLogLine)
+	returnedStyle = ''
+	if event == 'death':
+		returnedStyle = baseEventStyle + ';color:red'
+	elif event == 'serverstart':
+		returnedStyle = baseEventStyle + ';color:green'
+	elif event == 'joinedleft':
+		returnedStyle = baseEventStyle + ';color:white'
+	elif event == 'servertrouble':
+		returnedStyle = baseEventStyle + ';color:yellow'
+	elif event == 'advancement':
+		returnedStyle = baseEventStyle + ';color:purple'
+	
+	return returnedStyle
 
 #[17:12:08] [Server thread/INFO]: srhannah52 has made the advancement [We Need to Go Deeper]
 #[17:15:46] [Server thread/INFO]: srhannah52 has completed the challenge [Return to Sender]
@@ -103,6 +112,10 @@ def interestingLogLine(logline):
 			}
 	for item in interesting:
 		if logline.find(item) >= 0:
-			print(interesting[item])
-			break
+			#print(interesting[item])
+			return interesting[item]
+			
 
+def translateTime(timeToTranslate):
+	translatedTime = datetime.datetime.now
+	print(translatedTime.strftime('%B'))
