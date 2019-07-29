@@ -8,8 +8,8 @@ application = Flask(__name__)
 
 @application.route('/')
 def index():
-        client = boto3.client('ec2', region_name='us-east-1')
-        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+	client = boto3.client('ec2', region_name='us-east-1')
+	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
 	serverstatus = {}
 
 	if len(r['InstanceStatuses']) == 0:
@@ -31,57 +31,57 @@ def town():
 	serverinfo['bgimage'] = 'http://static.nine-walkers.com/sunrise-low1-combined.png'
 	serverinfo['newspage'] = 'news.html' 
 
-        serverstatus = {}
+	serverstatus = {}
 
-        instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-        if instance_status:
-                try:
-                        serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
-                except:
-                        serverstatus = []
+	instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
+	if instance_status:
+		try:
+			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+		except:
+			serverstatus = []
 
 	serverinfo['serverstatus'] = serverstatus
 	serverinfo['instancestatus'] = instance_status
-        mxmode = settings.AWS_CONFIG['maintenance']
-        return render_template('serverpage.html',value=instance_status,serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
+	mxmode = settings.AWS_CONFIG['maintenance']
+	return render_template('serverpage.html',value=instance_status,serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
 
 
 @application.route('/waterworld')
 def ww():
 
 	serverinfo = {}
-        serverinfo['servername'] = 'waterworld'
-        serverinfo['bgimage'] = 'http://static.nine-walkers.com/vasty_bg2.png'
-        serverinfo['newspage'] = 'waternews.html'
+	serverinfo['servername'] = 'waterworld'
+	serverinfo['bgimage'] = 'http://static.nine-walkers.com/vasty_bg2.png'
+	serverinfo['newspage'] = 'waternews.html'
 
 
-        serverstatus = {}
+	serverstatus = {}
 
 	instance_status = mc_util.getAWSInstanceStatus(settings.WATER_SERVER_INFO['aws_instance_id'])
 	if instance_status:
-        	try:
-                        serverstatus = QM.querymcserver('waterworld.nine-walkers.com')
-                except:
-                        serverstatus = []
+		try:
+			serverstatus = QM.querymcserver('waterworld.nine-walkers.com')
+		except:
+			serverstatus = []
 	serverinfo['instancestatus'] = instance_status
 
-        return render_template('serverpage.html',value=instance_status,serverstatusdict=serverstatus,serverpage='Waterworld', serverdata=serverinfo)
+	return render_template('serverpage.html',value=instance_status,serverstatusdict=serverstatus,serverpage='Waterworld', serverdata=serverinfo)
 
 
 
 @application.route('/hometest')
 def index2():
-        client = boto3.client('ec2', region_name='us-east-1')
-        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
-        serverstatus = {}
+	client = boto3.client('ec2', region_name='us-east-1')
+	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+	serverstatus = {}
 
-        if len(r['InstanceStatuses']) == 0:
-                i = ''
-        else:
-                i = r['InstanceStatuses'][0]['InstanceState']['Name']
-                serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
-#       return(i)
-        return render_template('home3.html',value=i,serverstatusdict=serverstatus)
+	if len(r['InstanceStatuses']) == 0:
+		i = ''
+	else:
+		i = r['InstanceStatuses'][0]['InstanceState']['Name']
+		serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+
+	return render_template('home3.html',value=i,serverstatusdict=serverstatus)
 
 
 
@@ -95,23 +95,23 @@ def logview():
 	loglines.append(Markup('</strong>'))
 	for line in file:
 		linetime = (line[1:9])
-	        if linetime:
+		if linetime:
 			try:
-	        		lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
-        	       		linelocaltime = lineactualtime + timedelta(hours=-5)
+				lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
+				linelocaltime = lineactualtime + timedelta(hours=-5)
 				localminute = str(linelocaltime.minute)
 				localsecond = str(linelocaltime.second)
 				if len(localminute) == 1:
 					localminute = '0' + localminute
 				if len(localsecond) == 1:
 					localsecond = '0' + localsecond
-               			print (linelocaltime)
+				#print (linelocaltime)
 				style = mc_util.logLineStyle(line)
-                		lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
+				lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
 				lineformatted = Markup('<span class = \"' + style + '\">' + lineformatted + '</span>')
 			except:
 				lineformatted = line
-	        loglines.append(lineformatted)
+			loglines.append(lineformatted)
 
 	loglines.append(Markup('<br/> <br/>'))
 #	loglines.append( time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
@@ -153,12 +153,12 @@ def startserver():
 	instancename = 'mcinstance'
 	if(servertype == 'water'):
 		instancename = 'mcinstance-water'
-        client = boto3.client('ec2', region_name='us-east-1')
-        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
-        if len(r['InstanceStatuses']) == 0:
-                i = 'instance down'
-        else:
-                i = r['InstanceStatuses'][0]['InstanceState']['Name']
+		client = boto3.client('ec2', region_name='us-east-1')
+		r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
+		if len(r['InstanceStatuses']) == 0:
+			i = 'instance down'
+		else:
+			i = r['InstanceStatuses'][0]['InstanceState']['Name']
 
 	if i == 'running':
 		returnedData = 'alreadyrunning'
@@ -171,44 +171,44 @@ def startserver():
 
 @application.route('/stopserver',methods=['GET','POST'])
 def stopserver():
-        returnedData = ''
+	returnedData = ''
 #request.data
 #       if not returnedData:
 #               returnedData = request.args.get('hello','')
 #               if not returnedData:
 #                       returnedData = 'no data'
-        servertype = ''
+	servertype = ''
 
-        if(request.args):
-                try:
-                        servertype = request.args['servername']
-                except:
-                        servertype = ''
+	if(request.args):
+		try:
+				servertype = request.args['servername']
+		except:
+				servertype = ''
 
-        instancename = 'mcinstance'
+	instancename = 'mcinstance'
 	serverurl = 'minecraft.nine-walkers.com'
 
-        if(servertype == 'water'):
-                instancename = 'mcinstance-water'
-		serverurl = 'waterworld.nine-walkers.com'
+	if(servertype == 'water'):
+		instancename = 'mcinstance-water'
+	serverurl = 'waterworld.nine-walkers.com'
 
-        client = boto3.client('ec2', region_name='us-east-1')
-        r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
-        if len(r['InstanceStatuses']) == 0:
-                returnedData = 'Server is already down!'
-        else:
-                returnedData = r['InstanceStatuses'][0]['InstanceState']['Name']
+	client = boto3.client('ec2', region_name='us-east-1')
+	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
+	if len(r['InstanceStatuses']) == 0:
+			returnedData = 'Server is already down!'
+	else:
+			returnedData = r['InstanceStatuses'][0]['InstanceState']['Name']
 
-        if returnedData == 'running':
+	if returnedData == 'running':
 		#do another check to be sure no one is online
 		serverstatus = QM.querymcserver(serverurl)
 		if serverstatus['playersonline'] != 0:
 			returnedData = 'Someone is online - not stopping the server!'
-                else:
-                         result = client.stop_instances(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
-                         returnedData = json.dumps(result)
+		else:
+					result = client.stop_instances(InstanceIds=[settings.AWS_CONFIG['mcinstance']])
+					returnedData = json.dumps(result)
 
-        return render_template('stopserver.html', value=returnedData)
+	return render_template('stopserver.html', value=returnedData)
 
 
 
