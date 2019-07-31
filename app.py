@@ -155,12 +155,13 @@ def startserver():
 	instancename = 'mcinstance'
 	if(servertype == 'water'):
 		instancename = 'mcinstance-water'
-		client = boto3.client('ec2', region_name='us-east-1')
-		r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
-		if len(r['InstanceStatuses']) == 0:
-			i = 'instance down'
-		else:
-			i = r['InstanceStatuses'][0]['InstanceState']['Name']
+
+	client = boto3.client('ec2', region_name='us-east-1')
+	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
+	if len(r['InstanceStatuses']) == 0:
+		i = 'instance down'
+	else:
+		i = r['InstanceStatuses'][0]['InstanceState']['Name']
 
 	if i == 'running':
 		returnedData = 'alreadyrunning'
