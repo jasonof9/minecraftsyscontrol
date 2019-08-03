@@ -1,4 +1,3 @@
-}
 AWS_CONFIG = {
         'mcinstance' : 'instance_id_here',
         'mcinstance-water' : 'water_instance_id',
