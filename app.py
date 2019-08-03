@@ -95,26 +95,34 @@ def logview():
 	loglines.append(Markup('<strong>Date: '))
 	loglines.append(time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime(filename))))
 	loglines.append(Markup('</strong>'))
+	lastline = ''
+	duplinecount = 0
 	for line in file:
-		linetime = (line[1:9])
-		if linetime:
-			try:
-				lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
-				linelocaltime = lineactualtime + timedelta(hours=-5)
-				localminute = str(linelocaltime.minute)
-				localsecond = str(linelocaltime.second)
-				if len(localminute) == 1:
-					localminute = '0' + localminute
-				if len(localsecond) == 1:
-					localsecond = '0' + localsecond
-				#print (linelocaltime)
-				style = mc_util.logLineStyle(line)
-				lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
-				lineformatted = Markup('<span style = \"' + style + '\">' + lineformatted + '</span>')
-			except:
-				lineformatted = line
+		if line[10:] != lastline[10:]:
+			linetime = (line[1:9])
+			if linetime:
+				try:
+					lineactualtime = datetime.datetime.strptime(linetime, '%H:%M:%S')
+					linelocaltime = lineactualtime + timedelta(hours=-5)
+					localminute = str(linelocaltime.minute)
+					localsecond = str(linelocaltime.second)
+					if len(localminute) == 1:
+						localminute = '0' + localminute
+					if len(localsecond) == 1:
+						localsecond = '0' + localsecond
+					#print (linelocaltime)
+					style = mc_util.logLineStyle(line)
+					lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
+					lineformatted = Markup('<span style = \"' + style + '\">' + lineformatted + '</span>')
+				except:
+					lineformatted = line
+				if duplinecount > 0:
+					loglines.append(Markup('<span>+ ' +  str(duplinecount) + ' more</span>'))
+					duplinecount = 0
 			loglines.append(lineformatted)
-
+			lastline = line
+		else:
+			duplinecount += 1
 	loglines.append(Markup('<br/> <br/>'))
 #	loglines.append( time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
 	return render_template('logs.html', value=loglines)
