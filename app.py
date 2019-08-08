@@ -251,5 +251,11 @@ def handle404(e):
 def handle500(e):
 	return str(e)
 
+@application.route('/robots.txt')
+def robots():
+	return render_template('robots.html')
+
+
+
 if __name__ == '__main__':
 	application.run()
