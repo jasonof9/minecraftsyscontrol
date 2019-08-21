@@ -87,9 +87,10 @@ def index2():
 
 
 
-@application.route('/logs')
+@application.route('/logs',methods=['GET'])
 def logview():
 	loglines = []
+	showfulllogs = request.args.get('logtype',default='')
 	filename = "/home/admin/mc_logs/latest.log"
 	file = open(filename, "r")
 	loglines.append(Markup('<strong>Date: '))
@@ -98,7 +99,7 @@ def logview():
 	lastline = ''
 	duplinecount = 0
 	for line in file:
-		if line[10:] != lastline[10:]:
+		if (line[10:50] != lastline[10:50]) or (showfulllogs):
 			linetime = (line[1:9])
 			if linetime:
 				try:
@@ -117,7 +118,7 @@ def logview():
 				except:
 					lineformatted = line
 				if duplinecount > 0:
-					loglines.append(Markup('<span>+ ' +  str(duplinecount) + ' more</span>'))
+					loglines.append(Markup('<a href = "/logs?logtype=full"><span>+ ' +  str(duplinecount) + ' more</span></a>'))
 					duplinecount = 0
 			loglines.append(lineformatted)
 			lastline = line
