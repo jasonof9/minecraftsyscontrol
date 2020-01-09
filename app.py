@@ -202,7 +202,7 @@ def stopserver():
 
 	if(servertype == 'water'):
 		instancename = 'mcinstance-water'
-	serverurl = 'waterworld.nine-walkers.com'
+		serverurl = 'waterworld.nine-walkers.com'
 
 	client = boto3.client('ec2', region_name='us-east-1')
 	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
