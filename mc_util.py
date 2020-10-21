@@ -1,5 +1,6 @@
 import boto3
 import datetime
+#import mcstatus.querymc as QM
 
 #this should return a string that matches a classname in 9w.css
 def logLineStyle(rawLogLine):
@@ -119,3 +120,21 @@ def interestingLogLine(logline):
 def translateTime(timeToTranslate):
 	translatedTime = datetime.datetime.now
 	print(translatedTime.strftime('%B'))
+
+def getServerStatus(serverinfo, instance_id, serverfqdn='minecraft.nine-walkers.com'):
+
+	serverstatus = {}
+	instance_status = ''
+	try:
+                instance_status = getAWSInstanceStatus(instance_id)
+        except:
+                instance_status = ''
+
+        if instance_status:
+                try:
+                        serverstatus = QM.querymcserver(serverfqdn)
+                except:
+                        serverstatus = []
+
+        serverinfo['serverstatus'] = serverstatus
+        serverinfo['instancestatus'] = instance_status

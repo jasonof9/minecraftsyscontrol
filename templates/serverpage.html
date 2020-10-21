@@ -3,15 +3,17 @@
 {% block body %}
 <script language="Javascript">
 $(function(){
-        document.getElementById('hometab').className = "nav-item";
+        document.getElementById('hometab').className = "nav-item active";
         document.getElementById('logstab').className = "nav-item";
         document.getElementById('overviewertab').className = "nav-item";
 {% if serverdata['servername'] == 'waterworld' %}
+	document.getElementById('hometab').className = 'nav-item';
         document.getElementById('wwtab').className = "nav-item active";
 	document.getElementById('towntab').className = "nav-item";
-{% else %}
-	document.getElementById('towntab').className = "nav-item active";
+{% elif serverdata['servername'] == 'pvp' %}
+	document.getElementById('pvptab').className = "nav-item active";
         document.getElementById('wwtab').className = "nav-item";
+	document.getElementById('hometab').className = "nav-item";
 {% endif %}
 
         document.getElementById('logstab').className = "nav-item";
@@ -34,8 +36,13 @@ $(function(){
 {% if serverdata['instancestatus'] == 'running' %}
 <p>Server is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
 
-{% if serverstatusdict['playersonline'] == 0 and serverpage != 'Waterworld'  %}
+{% if serverstatusdict['maxplayers'] %}
+<p>Minecraft is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
+
+{% if serverstatusdict['playersonline'] == 0 and serverpage != 'PVP'  %}
 <p>If no one is online, you can shut it down <a href="/stopserver"> by clicking here </a> </p>
+{% elif serverstatusdict['playersonline'] == 0 and serverpage == 'PVP' %}
+<p>If no one is online, you can shut it down <a href="/stopserver?servername=pvp"> by clicking here </a> </p>
 {% endif %}
 
 <table class="table table-bordered">
@@ -65,15 +72,22 @@ $(function(){
 </table>
 
 {% else %}
-<p>Server is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png"/></p> <br>
+<p>Minecraft is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png" alt="This is probably temporary. If it persists, contact you-know-who."/></p>
+<p>[probably temporary]</p>
+{% endif %}
+
+
+{% else %}
+<p>Server is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png"/></p>
+<p>Minecraft is not running&nbsp; <img src="http://static.nine-walkers.com/red-button-small.png"/></p> <br>
 
 {% if mx %}
 <p>Maintenace mode - please wait a few and check back! &nbsp; </p>
 
 {% else %} 
 
-{% if serverpage == 'Waterworld' %}
-<p>Click <a href='/startserver?servername=water'>here</a> to start it!</p>
+{% if serverpage == 'PVP' %}
+<p>Click <a href='/startserver?servername=pvp'>here</a> to start it!</p>
 {% else %}
 <p>Click <a href='/startserver'>here</a> to start it!</p> 
 {% endif %}
