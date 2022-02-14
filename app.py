@@ -158,7 +158,7 @@ def logview():
 						localsecond = '0' + localsecond
 					#print (linelocaltime)
 					style = mc_util.logLineStyle(line)
-					lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  line[10:]
+					lineformatted = '[' +  str(linelocaltime.hour) + ':' + localminute + ':' + localsecond + '] ' +  str.replace(str.replace(line[10:], '<', '&lt;'), '>','&gt;')
 					lineformatted = Markup('<span style = \"' + style + '\">' + lineformatted + '</span>')
 				except:
 					lineformatted = line
@@ -206,14 +206,19 @@ def startserver():
 		except:
 			servertype = ''
 
-	instancename = 'mcinstance'
+	instanceid = ''
+	instancename = 'town'
+	instanceid = settings.TOWN_SERVER_INFO['aws_instance_id']
+
 	if(servertype == 'water'):
 		instancename = 'mcinstance-water'
+		instanceid = settings.WATER_SERVER_INFO['aws_instance_id']
 	if(servertype == 'pvp'):
 		instancename = 'mcinstance-pvp'
+		instanceid = settings.PVP_SERVER_INFO['aws_instance_id']
 
 	client = boto3.client('ec2', region_name='us-east-1')
-	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
+	r = client.describe_instance_status(InstanceIds=[instanceid])
 	if len(r['InstanceStatuses']) == 0:
 		i = 'instance down'
 	else:
@@ -223,7 +228,7 @@ def startserver():
 		returnedData = 'alreadyrunning'
 	else:
 		if not returnedData:
-			 result = client.start_instances(InstanceIds=[settings.AWS_CONFIG[instancename]])
+			 result = client.start_instances(InstanceIds=[instanceid])
 			 returnedData = json.dumps(result)
 	return render_template('startserver.html', value=returnedData, server=servertype)
 
@@ -240,19 +245,22 @@ def stopserver():
 
 	if(request.args):
 		try:
-				servertype = request.args['servername']
+			servertype = request.args['servername']
 		except:
-				servertype = ''
+			servertype = ''
 
+	instanceid = ''
 	instancename = 'mcinstance'
+	instanceid = settings.TOWN_SERVER_INFO['aws_instance_id']
 	serverurl = 'minecraft.nine-walkers.com'
 
 	if(servertype == 'pvp'):
 		instancename = 'mcinstance-pvp'
 		serverurl = 'arena.nine-walkers.com'
+		instanceid = settings.PVP_SERVER_INFO['aws_instance_id']
 
 	client = boto3.client('ec2', region_name='us-east-1')
-	r = client.describe_instance_status(InstanceIds=[settings.AWS_CONFIG[instancename]])
+	r = client.describe_instance_status(InstanceIds=[instanceid])
 	if len(r['InstanceStatuses']) == 0:
 			returnedData = 'Server is already down!'
 	else:
@@ -264,12 +272,10 @@ def stopserver():
 		if serverstatus['playersonline'] != 0:
 			returnedData = 'Someone is online - not stopping the server!'
 		else:
-					result = client.stop_instances(InstanceIds=[settings.AWS_CONFIG[instancename]])
+					result = client.stop_instances(InstanceIds=[instanceid])
 					returnedData = json.dumps(result)
 
 	return render_template('stopserver.html', value=returnedData)
-
-
 
 
 
