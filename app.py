@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, Response, Markup, redirect
 import boto3, json, os, time, settings, datetime, mc_util
 from datetime import timedelta
-import mcstatus.querymc as QM
+import querymc as QM
 
 
 application = Flask(__name__)
@@ -10,27 +10,28 @@ application = Flask(__name__)
 def index():
 #	redirect('/town',300)
 	serverinfo = {}
-        serverinfo['servername'] = 'town'
-        serverinfo['bgimage'] = settings.TOWN_SERVER_INFO['bgimage']
-        serverinfo['newspage'] = 'news.html'
+	serverinfo['servername'] = 'town'
+	serverinfo['bgimage'] = settings.TOWN_SERVER_INFO['bgimage']
+	serverinfo['newspage'] = 'news.html'
 
-        serverstatus = {}
+	serverstatus = {}
 
-        instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-        if instance_status:
-                try:
-                        serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
-                except:
-                        serverstatus = []
-        serverinfo['serverstatus'] = serverstatus
-        serverinfo['instancestatus'] = instance_status
+	#instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
+	instance_status = "Pretty good"
+	if instance_status:
+		try:
+			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+		except:
+			serverstatus = []
+	serverinfo['serverstatus'] = serverstatus
+	serverinfo['instancestatus'] = instance_status
 
 #	mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'minecraft.nine-walkers.com')
 
 
 
-        mxmode = settings.AWS_CONFIG['maintenance']
-        return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
+	mxmode = settings.AWS_CONFIG['maintenance']
+	return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
 
 
 @application.route('/town')
@@ -43,7 +44,8 @@ def town():
 
 	serverstatus = {}
 
-	instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
+	#instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
+	instance_status = "Pretty good"
 	if instance_status:
 		try:
 			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
@@ -66,23 +68,23 @@ def pvp():
 	serverinfo = {}
 	serverinfo['servername'] = 'pvp'
 	serverinfo['bgimage'] = settings.PVP_SERVER_INFO['bgimage']
-        serverinfo['newspage'] = 'news.html'
+	serverinfo['newspage'] = 'news.html'
 
-        serverstatus = {}
+	serverstatus = {}
 	instance_status = mc_util.getAWSInstanceStatus(settings.PVP_SERVER_INFO['aws_instance_id'])
-        if instance_status:
+	if instance_status:
 		try:
 			serverstatus = QM.querymcserver('arena.nine-walkers.com')
-                except:
-                        serverstatus = []
+		except:
+			serverstatus = []
 
-        serverinfo['serverstatus'] = serverstatus
-        serverinfo['instancestatus'] = instance_status
+	serverinfo['serverstatus'] = serverstatus
+	serverinfo['instancestatus'] = instance_status
 
 #       mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'waterworld.nine-walkers.com')
 
-        mxmode = settings.AWS_CONFIG['maintenance']
-        return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='PVP',mx=mxmode,serverdata=serverinfo)
+	mxmode = settings.AWS_CONFIG['maintenance']
+	return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='PVP',mx=mxmode,serverdata=serverinfo)
 
 
 

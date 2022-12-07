@@ -52,7 +52,7 @@ def getAWSInstanceStatus(aws_instance):
 def interestingLogLine(logline):
 	#todo - put these into a file and read it in
 	interesting = {
-            'Starting minecraft server version' : 'serverstart',
+	    'Starting minecraft server version' : 'serverstart',
 			'Done (' : 'serverstart',
 			'joined the game' : 'joinedleft',
 			'Can\'t keep up!' : 'servertrouble',
@@ -126,15 +126,15 @@ def getServerStatus(serverinfo, instance_id, serverfqdn='minecraft.nine-walkers.
 	serverstatus = {}
 	instance_status = ''
 	try:
-                instance_status = getAWSInstanceStatus(instance_id)
-        except:
-                instance_status = ''
+		instance_status = getAWSInstanceStatus(instance_id)
+	except:
+		instance_status = ''
 
-        if instance_status:
-                try:
-                        serverstatus = QM.querymcserver(serverfqdn)
-                except:
-                        serverstatus = []
+	if instance_status:
+		try:
+			serverstatus = QM.querymcserver(serverfqdn)
+		except:
+			serverstatus = []
 
-        serverinfo['serverstatus'] = serverstatus
-        serverinfo['instancestatus'] = instance_status
+	serverinfo['serverstatus'] = serverstatus
+	serverinfo['instancestatus'] = instance_status
