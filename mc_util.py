@@ -39,15 +39,15 @@ def getMCServerStatus(instanceid='i-0cd6873f151ca215e'):
 
 
 def getAWSInstanceStatus(aws_instance):
-	client = boto3.client('ec2', region_name='us-east-1')
-	response = client.describe_instance_status(InstanceIds=[aws_instance])
+#	client = boto3.client('ec2', region_name='us-east-1')
+#	response = client.describe_instance_status(InstanceIds=[aws_instance])
+#
+#	if len(response['InstanceStatuses']) == 0:
+#		status = ''
+#	else:
+#		status = response['InstanceStatuses'][0]['InstanceState']['Name']
 
-	if len(response['InstanceStatuses']) == 0:
-		status = ''
-	else:
-		status = response['InstanceStatuses'][0]['InstanceState']['Name']
-
-	return status
+	return "Pretty good"
 
 def interestingLogLine(logline):
 	#todo - put these into a file and read it in

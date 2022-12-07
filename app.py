@@ -16,8 +16,7 @@ def index():
 
 	serverstatus = {}
 
-	#instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-	instance_status = "Pretty good"
+	instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
 	if instance_status:
 		try:
 			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
@@ -44,8 +43,7 @@ def town():
 
 	serverstatus = {}
 
-	#instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-	instance_status = "Pretty good"
+	instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
 	if instance_status:
 		try:
 			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
@@ -138,7 +136,7 @@ def index2():
 def logview():
 	loglines = []
 	showfulllogs = request.args.get('logtype',default='')
-	filename = "/home/admin/mc_logs/latest.log"
+	filename = "latest.log"
 	file = open(filename, "r")
 	loglines.append(Markup('<strong>Date: '))
 	loglines.append(time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime(filename))))
