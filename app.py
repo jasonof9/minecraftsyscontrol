@@ -6,32 +6,6 @@ import querymc as QM
 
 application = Flask(__name__)
 
-@application.route('/')
-def index():
-#	redirect('/town',300)
-	serverinfo = {}
-	serverinfo['servername'] = 'town'
-	serverinfo['bgimage'] = settings.TOWN_SERVER_INFO['bgimage']
-	serverinfo['newspage'] = 'news.html'
-
-	serverstatus = {}
-
-	instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-	if instance_status:
-		try:
-			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
-		except:
-			serverstatus = []
-	serverinfo['serverstatus'] = serverstatus
-	serverinfo['instancestatus'] = instance_status
-
-#	mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'minecraft.nine-walkers.com')
-
-
-
-	mxmode = settings.AWS_CONFIG['maintenance']
-	return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
-
 
 def get_server_info(name, address, newspage, server_settings):
 	serverinfo = {}
@@ -53,6 +27,10 @@ def get_server_info(name, address, newspage, server_settings):
 	mxmode = settings.AWS_CONFIG['maintenance']
 	return render_template('serverpage.html', value=serverinfo['serverstatus'], serverstatusdict=serverstatus, serverpage=name, mx=mxmode, serverdata=serverinfo)
 
+
+@application.route('/')
+def index():
+	return get_server_info('town', 'minecraft.nine-walkers.com', 'news.html', settings.TOWN_SERVER_INFO)
 
 @application.route('/town')
 def town():
