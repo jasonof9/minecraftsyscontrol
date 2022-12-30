@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, Response, Markup, redirect
 import boto3, json, os, time, settings, datetime, mc_util
 from datetime import timedelta
-import mcstatus.querymc as QM
+import querymc as QM
 
 
 application = Flask(__name__)
@@ -10,36 +10,9 @@ application = Flask(__name__)
 def index():
 #	redirect('/town',300)
 	serverinfo = {}
-        serverinfo['servername'] = 'town'
-        serverinfo['bgimage'] = settings.TOWN_SERVER_INFO['bgimage']
-        serverinfo['newspage'] = 'news.html'
-
-        serverstatus = {}
-
-        instance_status = mc_util.getAWSInstanceStatus(settings.TOWN_SERVER_INFO['aws_instance_id'])
-        if instance_status:
-                try:
-                        serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
-                except:
-                        serverstatus = []
-        serverinfo['serverstatus'] = serverstatus
-        serverinfo['instancestatus'] = instance_status
-
-#	mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'minecraft.nine-walkers.com')
-
-
-
-        mxmode = settings.AWS_CONFIG['maintenance']
-        return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
-
-
-@application.route('/town')
-def town():
-	serverinfo = {}
 	serverinfo['servername'] = 'town'
 	serverinfo['bgimage'] = settings.TOWN_SERVER_INFO['bgimage']
-#'http://static.nine-walkers.com/sunrise-low1-combined.png'
-	serverinfo['newspage'] = 'news.html' 
+	serverinfo['newspage'] = 'news.html'
 
 	serverstatus = {}
 
@@ -49,70 +22,54 @@ def town():
 			serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
 		except:
 			serverstatus = []
-
 	serverinfo['serverstatus'] = serverstatus
 	serverinfo['instancestatus'] = instance_status
 
-#	mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'waterworld.nine-walkers.com')
+#	mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'minecraft.nine-walkers.com')
+
+
 
 	mxmode = settings.AWS_CONFIG['maintenance']
 	return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Town',mx=mxmode,serverdata=serverinfo)
 
 
+def get_server_info(name, address, newspage, server_settings):
+	serverinfo = {}
+	serverinfo['servername'] = name
+	serverinfo['bgimage'] = server_settings['bgimage']
+	serverinfo['newspage'] = newspage
+
+	serverstatus = {}
+	instance_status = mc_util.getAWSInstanceStatus(server_settings['aws_instance_id'])
+	if instance_status:
+		try:
+			serverstatus = QM.querymcserver(address)
+		except:
+			serverstatus = []
+
+	serverinfo['serverstatus'] = serverstatus
+	serverinfo['instancestatus'] = instance_status
+
+	mxmode = settings.AWS_CONFIG['maintenance']
+	return render_template('serverpage.html', value=serverinfo['serverstatus'], serverstatusdict=serverstatus, serverpage=name, mx=mxmode, serverdata=serverinfo)
+
+
+@application.route('/town')
+def town():
+	return get_server_info('town', 'minecraft.nine-walkers.com', 'news.html', settings.TOWN_SERVER_INFO)
+
+
 
 @application.route('/pvp')
 def pvp():
-
-	serverinfo = {}
-	serverinfo['servername'] = 'pvp'
-	serverinfo['bgimage'] = settings.PVP_SERVER_INFO['bgimage']
-        serverinfo['newspage'] = 'news.html'
-
-        serverstatus = {}
-	instance_status = mc_util.getAWSInstanceStatus(settings.PVP_SERVER_INFO['aws_instance_id'])
-        if instance_status:
-		try:
-			serverstatus = QM.querymcserver('arena.nine-walkers.com')
-                except:
-                        serverstatus = []
-
-        serverinfo['serverstatus'] = serverstatus
-        serverinfo['instancestatus'] = instance_status
-
-#       mc_util.getServerStatus(serverinfo, settings.TOWN_SERVER_INFO['aws_instance_id'], 'waterworld.nine-walkers.com')
-
-        mxmode = settings.AWS_CONFIG['maintenance']
-        return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='PVP',mx=mxmode,serverdata=serverinfo)
+	return get_server_info('pvp', 'arena.nine-walkers.com', 'news.html', settings.PVP_SERVER_INFO)
 
 
 
 @application.route('/waterworld')
 def ww():
-
-	serverinfo = {}
-	serverinfo['servername'] = 'waterworld'
-	serverinfo['bgimage'] = 'http://static.nine-walkers.com/vasty_bg2.png'
-	serverinfo['newspage'] = 'waternews.html'
-
-	mc_util.getServerStatus(serverinfo, settings.WATER_SERVER_INFO['aws_instance_id'])
-
-#	serverstatus = {}
-
-#	try:
-#		instance_status = mc_util.getAWSInstanceStatus(settings.WATER_SERVER_INFO['aws_instance_id'])
-#	except:
-#		instance_status = ''
-#
-#	if instance_status:
-#		try:
-#			serverstatus = QM.querymcserver('waterworld.nine-walkers.com')
-#		except:
-#			serverstatus = []
-
-#	serverinfo['serverstatus'] = serverstatus
-#	serverinfo['instancestatus'] = instance_status
-
-	return render_template('serverpage.html',value=serverinfo['serverstatus'],serverstatusdict=serverstatus,serverpage='Waterworld', serverdata=serverinfo)
+        #This page should probably be removed at this point. No one cares, and it's janky with this system anyway.
+	return get_server_info('waterworld', '', 'waternews.html', settings.WATER_SERVER_INFO)
 
 
 
@@ -136,7 +93,7 @@ def index2():
 def logview():
 	loglines = []
 	showfulllogs = request.args.get('logtype',default='')
-	filename = "/home/admin/mc_logs/latest.log"
+	filename = "latest.log"
 	file = open(filename, "r")
 	loglines.append(Markup('<strong>Date: '))
 	loglines.append(time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime(filename))))
