@@ -122,7 +122,6 @@ def translateTime(timeToTranslate):
     print(translatedTime.strftime('%B'))
 
 def getServerStatus(serverinfo, instance_id, serverfqdn='minecraft.nine-walkers.com'):
-
     serverstatus = {}
     instance_status = ''
     try:

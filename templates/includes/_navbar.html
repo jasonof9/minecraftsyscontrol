@@ -9,37 +9,26 @@
  <div class="collapse navbar-collapse" id="navbarsExampleDefault" style="background-image:url('http://static.nine-walkers.com/plain_vasty_top.png')">
 {% endif %}
         <ul class="navbar-nav mr-auto">
-        <li class = "nav-item">
-            <select name = "server">
-                <option value = "Town">Town</option>
-                <option value = "Village">Village</option>
-            </select>
-        </li>
-        
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://mcoverview.nine-walkers.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Server</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+{% for internalname, server in serverdict.items() %}
+              <a class="dropdown-item" href="/{{internalname}}">{{server['name']}}</a>
+{% endfor %}
+            </div>
+          </li>
           <li class="nav-item active" id="hometab">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/{{serverurl}}">Dashboard <span class="sr-only">(current)</span></a>
           </li>
- 	<li class="nav-item" id="towntab">
-            <a class="nav-link" href="/town">Town</a>
-          </li>
-        <li class="nav-item" id="pvptab">
-            <a class="nav-link" href="/pvp">PvP - Arena</a>
-          </li>
-	 <li class="nav-item" id="wwtab">
-            <a class="nav-link" href="/waterworld">Kamino</a>
-          </li>
-
           <li class="nav-item" id="logstab">
-            <a class="nav-link" href="/logs">Logs (town)</a>
-          </li>
-          <li class="nav-item" id="overviewertab">
-            <a class="nav-link" href="http://mcoverview.nine-walkers.com">Minecraft Map (town)</a>
+            <a class="nav-link" href="/{{serverurl}}/logs">Logs</a>
           </li>
   	  <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://mcoverview.nine-walkers.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Map Options</a>
+            <a class="nav-link dropdown-toggle" href="http://mcoverview.nine-walkers.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Maps</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="http://mcoverview.nine-walkers.com">Overviewer Map</a>
-              <a class="dropdown-item" href="http://mcoverview-test.nine-walkers.com">Overviewer Test Map</a>
+{% for mapname, mapaddress in thisserver['maps'].items() %}
+              <a class="dropdown-item" href="{{mapaddress}}">{{mapname}}</a>
+{% endfor %}
             </div>
           </li>
         </ul>
