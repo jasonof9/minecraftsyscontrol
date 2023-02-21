@@ -25,7 +25,7 @@ $(function(){
 
 
 <div class = "container-fluid" style="background-image: url(http://static.nine-walkers.com/translucent_tile.png)">
-<h1> Welcome to Minecraft System Status - {{serverpage}} </h1>
+<h1> Welcome to Minecraft System Status - {{thisserver['name']}} </h1>
 
 <!-- debug info: {{serverdata['serverstatus']['maxplayers']}}  {{serverdata['instancestatus']}}  {{serverdata['servername']}} {{serverdata['bgimage']}} {{serverdata['newspage']}}  -->
 
@@ -39,12 +39,7 @@ $(function(){
 {% if serverstatusdict['maxplayers'] %}
 <p>Minecraft is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
 
-{% if serverstatusdict['playersonline'] == 0 and serverpage != 'PVP'  %}
 <p>If no one is online, you can shut it down <a href="/stopserver"> by clicking here </a> </p>
-{% elif serverstatusdict['playersonline'] == 0 and serverpage == 'PVP' %}
-<p>If no one is online, you can shut it down <a href="/stopserver?servername=pvp"> by clicking here </a> </p>
-{% endif %}
-
 <table class="table table-bordered">
 	<thead>
 		<tr>
@@ -86,11 +81,7 @@ $(function(){
 
 {% else %} 
 
-{% if serverpage == 'PVP' %}
-<p>Click <a href='/startserver?servername=pvp'>here</a> to start it!</p>
-{% else %}
-<p>Click <a href='/startserver'>here</a> to start it!</p> 
-{% endif %}
+<p>Click <a href='/startserver?servername={{serverurl}}'>here</a> to start it!</p> 
 
 {% endif %}
 
