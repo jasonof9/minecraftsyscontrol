@@ -26,7 +26,7 @@ def dash(server):
         instance_status = mc_util.getAWSInstanceStatus(targetserver['aws_instance_id'])
         if instance_status:
                 try:
-                        serverstatus = QM.querymcserver('minecraft.nine-walkers.com')
+                        serverstatus = QM.querymcserver(targetserver['server_address'])
                 except:
                         serverstatus = []
 
@@ -95,7 +95,7 @@ def logview(server):
                         duplinecount += 1
         loglines.append(Markup('<br/> <br/>'))
 #       loglines.append( time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime('/home/admin/mc_logs/latest.log'))))
-        return render_template('logs.html', value=loglines, serverurl = server, serverdict = servers.SERVERS, thisserver = servers.SERVERS[escape(server)])
+        return render_template('logs.html', value=loglines, serverurl = escape(server), serverdict = servers.SERVERS, thisserver = servers.SERVERS[escape(server)])
 
 
 @application.route('/about')

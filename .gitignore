@@ -27,4 +27,5 @@ validjson.json
 settings.py
 settings.pyc
 latest.log
-__pycache__
+servers.py
+__pycache__/*

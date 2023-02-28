@@ -6,20 +6,6 @@ $(function(){
         document.getElementById('hometab').className = "nav-item active";
         document.getElementById('logstab').className = "nav-item";
         document.getElementById('overviewertab').className = "nav-item";
-{% if serverdata['servername'] == 'waterworld' %}
-	document.getElementById('hometab').className = 'nav-item';
-        document.getElementById('wwtab').className = "nav-item active";
-	document.getElementById('towntab').className = "nav-item";
-{% elif serverdata['servername'] == 'pvp' %}
-	document.getElementById('pvptab').className = "nav-item active";
-        document.getElementById('wwtab').className = "nav-item";
-	document.getElementById('hometab').className = "nav-item";
-{% endif %}
-
-        document.getElementById('logstab').className = "nav-item";
-        document.getElementById('overviewertab').className = "nav-item";
-
-}
 )
 </script>
 
@@ -39,7 +25,7 @@ $(function(){
 {% if serverstatusdict['maxplayers'] %}
 <p>Minecraft is running!&nbsp; <img src="http://static.nine-walkers.com/green-button-small.png"/> <br></p>
 
-<p>If no one is online, you can shut it down <a href="/stopserver"> by clicking here </a> </p>
+<p>If no one is online, you can shut it down <a href="/stopserver?servername={{serverurl}}"> by clicking here </a> </p>
 <table class="table table-bordered">
 	<thead>
 		<tr>
