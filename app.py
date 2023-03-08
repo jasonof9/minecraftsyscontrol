@@ -131,7 +131,7 @@ def startserver():
         instanceid = targetserver['aws_instance_id']
         instancename = request.args['servername']
 
-        client = boto3.client('ec2', region_name='us-east-1')
+        client = boto3.client('ec2', region_name='us-east-2')
         r = client.describe_instance_status(InstanceIds=[instanceid])
         if len(r['InstanceStatuses']) == 0:
                 i = 'instance down'
@@ -144,7 +144,7 @@ def startserver():
                 if not returnedData:
                          result = client.start_instances(InstanceIds=[instanceid])
                          returnedData = json.dumps(result)
-        return render_template('startserver.html', value=returnedData, server=servertype)
+        return render_template('startserver.html', value=returnedData, server=servertype, serverdict=servers.SERVERS, thisserver = targetserver)
 
 
 @application.route('/stopserver',methods=['GET','POST'])
@@ -169,7 +169,7 @@ def stopserver():
         instanceid = targetserver['aws_instance_id']
         serverurl = targetserver['server_address']
 
-        client = boto3.client('ec2', region_name='us-east-1')
+        client = boto3.client('ec2', region_name='us-east-2')
         r = client.describe_instance_status(InstanceIds=[instanceid])
         if len(r['InstanceStatuses']) == 0:
                         returnedData = 'Server is already down!'
@@ -185,7 +185,7 @@ def stopserver():
                                         result = client.stop_instances(InstanceIds=[instanceid])
                                         returnedData = json.dumps(result)
 
-        return render_template('stopserver.html', value=returnedData)
+        return render_template('stopserver.html', value=returnedData, serverdict=servers.SERVERS, thisserver = targetserver)
 
 
 
