@@ -26,3 +26,6 @@ test.py
 validjson.json
 settings.py
 settings.pyc
+latest.log
+servers.py
+__pycache__/*
